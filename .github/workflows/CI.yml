@@ -1,12 +1,19 @@
- 
 name: CI
 
 on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-  steps:
-      - uses: cedx/setup-dart@v2
-      - run: dart pub get
-      - run: dart test
+    test:
+        name: Dart SDK ${{matrix.sdk}} on ${{matrix.os}}
+        runs-on: ${{matrix.os}}
+        strategy:
+            matrix:
+                os: [ubuntu-latest]
+                sdk: [stable, dev]
+        steps:
+            - uses: cedx/setup-dart@v2
+                with:
+                    release-channel: ${{matrix.sdk}}
+            - uses: actions/checkout@v2
+            - run: dart pub get
+            - run: dart test
