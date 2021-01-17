@@ -26,4 +26,4 @@ jobs:
         if: success()
         run: |
           dart pub run coverage:format_coverage --in=build/test --lcov --out=build/lcov.info --packages=.dart_tool/package_config.json --report-on=lib
-          dart pub run coveralls var/lcov.info
+          dart pub run coveralls build/lcov.info
