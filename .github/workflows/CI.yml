@@ -1,19 +1,29 @@
 name: CI
-
-on: [push, pull_request]
-
+on:
+  - pull_request
+  - push
 jobs:
-    test:
-        name: Dart SDK ${{matrix.sdk}} on ${{matrix.os}}
-        runs-on: ${{matrix.os}}
-        strategy:
-            matrix:
-                os: [ubuntu-latest]
-                sdk: [stable, dev]
-        steps:
-            - uses: cedx/setup-dart@v2
-                with:
-                    release-channel: ${{matrix.sdk}}
-            - uses: actions/checkout@v2
-            - run: dart pub get
-            - run: dart test
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch sources
+        uses: actions/checkout@v2
+      - name: Set up Dart
+        uses: cedx/setup-dart@v2
+        with:
+          architecture: x64
+          release-channel: stable
+          version: latest
+      - name: Check environment
+        run: dart --version
+      - name: Install dependencies
+        run: dart pub get
+      - name: Run tests
+        run: dart test --coverage=build
+      - name: Collect code coverage
+        env:
+          COVERALLS_REPO_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        if: success()
+        run: |
+          dart pub run coverage:format_coverage --in=build/test --lcov --out=build/lcov.info --packages=.dart_tool/package_config.json --report-on=lib
+          dart pub run coveralls var/lcov.info
