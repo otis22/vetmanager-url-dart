@@ -1,7 +1,7 @@
 name: vetmanager_url
 description: 'Library for getting full vetmanager url by domain name' 
-# version: 0.0.1
-# homepage: https://www.example.com
+version: 0.0.1
+homepage: https://github.com/otis22/vetmanager-url-dart
 
 environment:
   sdk: '>=2.10.0 <3.0.0'

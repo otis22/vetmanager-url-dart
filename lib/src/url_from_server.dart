@@ -6,7 +6,7 @@ import 'stringable_async.dart';
 
 class UrlFromServer implements StringableAsync {
   final Domain _domain;
-  final http.BaseClient _client;
+  final http.Client _client;
 
   UrlFromServer(this._domain, this._client);
 
